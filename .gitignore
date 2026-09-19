@@ -16,10 +16,14 @@ env/
 *.sublime-workspace
 
 # --- OS junk ---
+# Note: root desktop.ini is intentional EXPC project-folder presentation
+# metadata (pairs with assets/icon.ico), not disposable OS junk -- it is
+# tracked, not ignored. Subdirectory desktop.ini files (if any ever
+# appear, e.g. from Explorer folder customization elsewhere in the tree)
+# are still OS junk; this repository has none today.
 Thumbs.db
 ehthumbs.db
 $RECYCLE.BIN/
-desktop.ini
 .DS_Store
 .AppleDouble
 .LSOverride

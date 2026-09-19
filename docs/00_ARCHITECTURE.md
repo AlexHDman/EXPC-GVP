@@ -1,38 +1,46 @@
-# Architecture (Conceptual — Phase 00)
+# Architecture (Conceptual — Phase 00 / Builder MVP — Phase 01.0)
 
-**Status: this document describes an intended pipeline, not an implemented
-one.** As of Phase 00.2, no builder, no SQLite pack, no manifest, and no
-updater exist. Nothing described here runs automatically.
+**Status.** As of Phase 01.0, a minimal Builder (`tools/builder/`) exists
+and implements a small slice of the pipeline below against
+`data/curated/*.json` only — see `docs/04_BUILDER.md` for exactly what it
+does. No SQLite pack, no manifest, no updater, and no CI exist yet, and no
+external source has been ingested. Nothing in this document beyond what
+`docs/04_BUILDER.md` describes runs automatically.
 
 ## Conceptual data pipeline
 
 ```text
 Sources
   ↓
-normalize
+normalize                        \
+  ↓                                }  implemented by the Phase 01.0
+deduplicate                       /   Builder MVP, scoped to
+  ↓                              /    data/curated/*.json only --
+canonicalization                /     see docs/04_BUILDER.md
+  ↓                             /
+alias generation/import        /
+  ↓                            |
+collision detection            |  implemented (comparison/collision
+  ↓                            |  analysis only, not a full pipeline
+ambiguity classification       /  stage in its own right yet)
   ↓
-deduplicate
+source/license validation        <- not implemented (no external
+  ↓                                  sources exist to validate)
+schema validation                 <- implemented (JSON Schema stage)
   ↓
-canonicalization
-  ↓
-alias generation/import
-  ↓
-collision detection
-  ↓
-ambiguity classification
-  ↓
-source/license validation
-  ↓
-schema validation
-  ↓
-distribution package
+distribution package               <- not implemented (dist/gvp.json is
+                                       an intermediate MVP artifact, not
+                                       a distribution package/manifest)
 ```
 
-Each stage above is a future responsibility of a Builder that does not exist
-yet. Phase 00.2 only defines the contract the *end* of this pipeline must
-produce (`schema/gvp.schema.json`) and the policies (`docs/03_COLLISION_POLICY.md`)
-that stages such as "collision detection" and "ambiguity classification" will
-eventually implement. It does not implement any stage.
+Phase 00.2 defined the contract the *end* of this pipeline must produce
+(`schema/gvp.schema.json`) and the policies (`docs/03_COLLISION_POLICY.md`).
+Phase 01.0 implements loading, schema validation, semantic validation,
+comparison-only normalization, and collision analysis against the existing
+curated fixture set, and writes a deterministic `dist/gvp.json`. It does
+**not** implement source ingestion, deduplication across multiple raw
+sources, license validation, or any distribution/release packaging — those
+remain future work.
 
 ## Versioning model
 
@@ -41,7 +49,7 @@ EXPC-GVP has three independent version axes. They must never be conflated:
 | Axis | What it versions | Scheme | Where recorded |
 |---|---|---|---|
 | **Schema version** | The *contract* (`schema/gvp.schema.json`) | SemVer-like, e.g. `0.1.0` | `x-schema-version` field inside the schema file itself |
-| **Builder version** | The (future) tool that produces data packs | SemVer | Builder's own manifest/package metadata, once it exists |
+| **Builder version** | The tool that produces build artifacts | SemVer | `__builder_version__` in `tools/builder/__init__.py`. Phase 01.0 MVP starts at `0.1.0-mvp`; not yet published via any manifest/package metadata. |
 | **Data Pack version** | A released, versioned bundle of vocabulary data | CalVer (date-based) | A future `manifest.json`, once releases exist |
 
 A new Data Pack release does **not** imply a new schema version — most
@@ -77,3 +85,4 @@ Only entries classified as **Global candidate**, and then reviewed against
 - `docs/01_DATA_SCHEMA.md` — the entity schema, field by field
 - `docs/02_VOCABULARY_LAYERS.md` — Global / Domain / Organization / Personal
 - `docs/03_COLLISION_POLICY.md` — ambiguity levels and collision handling
+- `docs/04_BUILDER.md` — the Phase 01.0 Builder MVP: command, stages, output, limitations

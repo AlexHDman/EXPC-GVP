@@ -15,13 +15,15 @@ phases.
 - **No personal or private data.** Do not contribute personal names, private
   organizational data, client information, or anything scoped to an
   individual/private context (see `SECURITY.md`).
-- **Schema validation.** As of Phase 00.2, `schema/gvp.schema.json` exists
-  and `tests/test_schema.py` validates every file under `data/curated/`
-  against it. Any new data contribution must also validate against the
-  schema (see `docs/01_DATA_SCHEMA.md`). Schema validation is not yet wired
-  into any automated CI check — running `pytest` locally is currently a
-  manual step — and it does not replace the source/provenance review against
-  this document and `SOURCES.md`.
+- **Schema validation.** `schema/gvp.schema.json` exists and
+  `tests/test_schema.py` validates every file under `data/curated/` against
+  it. As of Phase 01.0, `py -3.12 -m tools.builder build` also validates the
+  same data (schema + semantic + collision checks) and will refuse to
+  produce `dist/gvp.json` if anything fails — see `docs/04_BUILDER.md`. Any
+  new data contribution must validate against both. Neither is wired into
+  any automated CI check yet — running `pytest` / the Builder locally is
+  currently a manual step — and neither replaces the source/provenance
+  review against this document and `SOURCES.md`.
 - Ordinary data additions are expected, in the future, to go through a
   **data pull request** scoped only to `data/` content.
 
@@ -34,8 +36,9 @@ phases.
 
 ## Current phase
 
-This repository is in early development (Phase 00). A local test suite
-(`tests/test_schema.py`, run via `pytest`) covers schema validation and
-automated collision detection against the fixture dataset. Automated CI
-(GitHub Actions or similar) does not exist yet — nothing runs these checks
-automatically on push/PR.
+This repository is in early development (Phase 01.0). A local test suite
+(`tests/test_schema.py`, `tests/test_builder.py`, run via `pytest`) covers
+schema validation, automated collision detection, and the Builder MVP
+(`tools/builder/`, see `docs/04_BUILDER.md`). Automated CI (GitHub Actions
+or similar) does not exist yet — nothing runs these checks automatically
+on push/PR; `pytest` and the Builder must be run manually.
