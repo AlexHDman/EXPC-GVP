@@ -6,6 +6,14 @@ auto-replace an alias with its canonical form. It is policy/documentation;
 the machine-enforced parts of it live in `schema/gvp.schema.json` (see
 "Cross-field constraints" in `docs/01_DATA_SCHEMA.md`).
 
+**Since Phase 01.1 (schema 0.2.0), ambiguity/policy/auto_replace are
+resolved per *alias*, not just per entity** — see
+`docs/01_DATA_SCHEMA.md` → "Per-alias policy model" for the mechanism
+(entity defaults → optional alias overrides → effective policy). The
+levels and examples below describe the same classification, now applied
+per-alias; entity-level values remain the default/fallback for any alias
+that does not specify its own override.
+
 ## Ambiguity levels
 
 ### `low`
@@ -26,14 +34,16 @@ specific contexts. Additional checks (context/domain hints, word-boundary
 checks) are required before replacing. By default, `auto_replace` should be
 `false` for `medium` until a consumer implements those checks.
 
-Examples from the Phase 00.2 fixture:
+Examples from the fixture:
 
 - `Docker` — alias `докер` collides with the ordinary Russian word "докер"
   (dockworker/stevedore).
 - `Claude` — alias `клод` collides with the common transliteration of the
   French given name "Claude" (e.g. Claude Monet → "Клод Моне").
 - `Wi-Fi` — alias `вафля` (Russian internet slang for Wi-Fi) collides with
-  the ordinary word "вафля" (waffle).
+  the ordinary word "вафля" (waffle). Since Phase 01.1 this is a
+  **per-alias override** on `standard.wifi`, not the entity default — see
+  "Wi-Fi worked example" below.
 - `Xray` (the software) — alias `иксрей`/`икс-рей` collides with the
   common Russian rendering of "x-ray" in its medical-imaging sense
   ("рентген" is more common, but "икс-рей" is also used colloquially).
@@ -89,11 +99,47 @@ interrogative/adverb "куда" ("where to"). It must never be replaced with
   safe default outcome; a wrong automatic replacement is worse than no
   replacement.
 
-## Open question flagged by this phase
+## Wi-Fi worked example (per-alias policy, Phase 01.1)
 
-Ambiguity is currently modeled **per entity**, not per individual alias.
-`Wi-Fi` has both a very safe alias (`вайфай`) and a much riskier one
-(`вафля`) under a single `ambiguity: "medium"` value for the whole entity.
-This is a known simplification — see the "OPEN DECISIONS" list in the
-Phase 00.2 report for the proposed follow-up (per-alias ambiguity/confidence
-scoring) to consider in a future phase.
+`standard.wifi`'s entity-level defaults are now the safe/common case:
+`ambiguity: low`, `policy: canonical_preferred`, `auto_replace: true`.
+
+```text
+Wi-Fi
+├── вайфай  (plain string alias, inherits entity defaults)
+│     → effective: low / canonical_preferred / auto_replace=true
+└── вафля   (structured alias, overrides all three fields)
+      → effective: medium / canonical_preferred / auto_replace=false
+```
+
+`вайфай` is an ordinary informal spelling with no real collision risk, so
+it is left as a plain legacy string and simply inherits the entity's safe
+defaults. `вафля` is genuinely risky (it collides with the everyday word
+"waffle"), so it is a structured alias overriding `ambiguity`, `policy`,
+and `auto_replace` to the more conservative values on itself — without
+having to make the *whole entity* conservative and understate how safe
+`вайфай` actually is.
+
+## CUDA worked example (pure inheritance, no override needed)
+
+`software.cuda`'s single alias `куда` is left as a plain legacy string —
+no structured override was added, because none was needed: the entity's
+own `ambiguity: high` / `policy: context_required` / `auto_replace: false`
+already produce the correct effective policy for its only alias. This is
+deliberate: not every entity needs migrating to the structured form, only
+ones whose aliases actually have differing risk profiles (see
+`docs/01_DATA_SCHEMA.md` → "Per-alias policy model").
+
+## Changelog
+
+- **Phase 01.1 (schema 0.2.0).** Resolved the per-entity-only limitation
+  flagged in Phase 00.2 (quoted below for the historical record). Aliases
+  may now individually override `ambiguity`/`policy`/`auto_replace`; see
+  `docs/01_DATA_SCHEMA.md` → "Per-alias policy model" for the inheritance
+  rule and safety invariant, and the two worked examples above.
+
+  > Original Phase 00.2 note: "Ambiguity is currently modeled **per
+  > entity**, not per individual alias. `Wi-Fi` has both a very safe alias
+  > (`вайфай`) and a much riskier one (`вафля`) under a single
+  > `ambiguity: "medium"` value for the whole entity. This is a known
+  > simplification."

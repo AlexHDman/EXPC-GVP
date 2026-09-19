@@ -2,8 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/AlexHDman/EXPC-GVP/blob/main/schema/gvp.schema.json",
   "title": "EXPC-GVP Vocabulary Entity",
-  "x-schema-version": "0.1.0",
-  "$comment": "x-schema-version is EXPC-GVP-specific metadata, not a JSON Schema keyword. See docs/01_DATA_SCHEMA.md for the versioning model (schema version vs Builder SemVer vs Data Pack CalVer) and for design decisions referenced below.",
+  "x-schema-version": "0.2.0",
+  "$comment": "x-schema-version is EXPC-GVP-specific metadata, not a JSON Schema keyword. See docs/01_DATA_SCHEMA.md for the versioning model (schema version vs Builder SemVer vs Data Pack CalVer) and for design decisions referenced below. 0.2.0 (Phase 01.1) is a backward-compatible additive change: it adds an optional structured alias form ($defs/alias_entry) alongside the existing plain-string form. Every document valid under 0.1.0 remains valid under 0.2.0 unchanged -- see docs/01_DATA_SCHEMA.md 'Per-alias policy model' for why this is a MINOR bump, not a MAJOR one.",
   "description": "Contract for a single EXPC Global Vocabulary Pack entity. One JSON document (or one array element, depending on how a data pack chooses to store entities) must validate against this schema per vocabulary entity.",
   "type": "object",
   "required": [
@@ -53,12 +53,12 @@
       "patternProperties": {
         "^[a-z]{2}$": {
           "type": "array",
-          "items": { "type": "string", "minLength": 1 },
+          "items": { "$ref": "#/$defs/alias_entry" },
           "uniqueItems": true,
           "minItems": 1
         }
       },
-      "description": "Alternate spoken/written forms, keyed by ISO 639-1 language code. May be an empty object ({}) if no aliases are known yet -- the key must still be present (fail-safe explicitness, see provenance below for the same principle). Aliases are informal/variant forms; they are not translations (see 'ru_equivalent') and not the preferred phonetic rendering (see 'ru_transcription')."
+      "description": "Alternate spoken/written forms, keyed by ISO 639-1 language code (the language of the alias forms themselves, not necessarily the entity's own 'language' -- e.g. entity language 'en' can still have Russian aliases under aliases.ru). May be an empty object ({}) if no aliases are known yet -- the key must still be present (fail-safe explicitness, see provenance below for the same principle). Aliases are informal/variant forms; they are not translations (see 'ru_equivalent') and not the preferred phonetic rendering (see 'ru_transcription'). Each entry is either a plain string (legacy/simple form, schema 0.1.0-compatible) or a structured object with optional per-alias policy overrides -- see $defs/alias_entry and docs/01_DATA_SCHEMA.md 'Per-alias policy model'. uniqueItems only catches exact literal duplicates (same representation); normalization-aware duplicate detection across string/object representations of the same alias text is Builder's job (tools/builder/validator.py), not the schema's."
     },
     "ru_equivalent": {
       "type": ["string", "null"],
@@ -134,5 +134,62 @@
         "properties": { "auto_replace": { "const": false } }
       }
     }
-  ]
+  ],
+  "$defs": {
+    "alias_entry": {
+      "description": "One entry in an aliases['<lang>'] array. Either a plain string (legacy/simple form -- fully inherits ambiguity/policy/auto_replace from the entity) or a structured object carrying optional per-alias overrides of those same three fields. See docs/01_DATA_SCHEMA.md 'Per-alias policy model' for the entity-default -> alias-override inheritance rule and docs/03_COLLISION_POLICY.md for worked examples (Wi-Fi, CUDA).",
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["value"],
+          "properties": {
+            "value": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The alias text itself -- equivalent to what a plain-string entry would be."
+            },
+            "ambiguity": {
+              "type": "string",
+              "enum": ["low", "medium", "high"],
+              "description": "Overrides the entity's 'ambiguity' for this alias only. Absent = inherit the entity's value."
+            },
+            "policy": {
+              "type": "string",
+              "enum": ["canonical_preferred", "context_required"],
+              "description": "Overrides the entity's 'policy' for this alias only. Absent = inherit the entity's value."
+            },
+            "auto_replace": {
+              "type": "boolean",
+              "description": "Overrides the entity's 'auto_replace' for this alias only. Absent = inherit the entity's value."
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "required": ["ambiguity"],
+                "properties": { "ambiguity": { "const": "high" } }
+              },
+              "then": {
+                "required": ["auto_replace"],
+                "properties": { "auto_replace": { "const": false } }
+              }
+            },
+            {
+              "if": {
+                "required": ["policy"],
+                "properties": { "policy": { "const": "context_required" } }
+              },
+              "then": {
+                "required": ["auto_replace"],
+                "properties": { "auto_replace": { "const": false } }
+              }
+            }
+          ],
+          "$comment": "This allOf only catches a LOCALLY self-contradictory alias object: if THIS alias object states ambiguity=high or policy=context_required, it must ALSO state auto_replace=false on itself. It cannot see the entity's own ambiguity/policy/auto_replace, so it cannot catch an unsafe EFFECTIVE combination produced by merging a partial override with entity defaults -- e.g. an alias that overrides ONLY auto_replace=true while ambiguity/policy are left to inherit an unsafe entity-level ambiguity=high or policy=context_required. That cross-cutting, entity+alias merge check is Builder's job (tools/builder/validator.py + tools/builder/policy.py), not the schema's -- consistent with this schema's existing structural-contract-only role."
+        }
+      ]
+    }
+  }
 }

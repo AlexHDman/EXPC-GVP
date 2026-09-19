@@ -1,10 +1,13 @@
-# Architecture (Conceptual — Phase 00 / Builder MVP — Phase 01.0)
+# Architecture (Conceptual — Phase 00 / Builder MVP — Phase 01.0-01.1)
 
-**Status.** As of Phase 01.0, a minimal Builder (`tools/builder/`) exists
+**Status.** As of Phase 01.1, a minimal Builder (`tools/builder/`) exists
 and implements a small slice of the pipeline below against
 `data/curated/*.json` only — see `docs/04_BUILDER.md` for exactly what it
-does. No SQLite pack, no manifest, no updater, and no CI exist yet, and no
-external source has been ingested. Nothing in this document beyond what
+does. Phase 01.1 added per-alias effective-policy resolution and
+alias-granularity collision analysis (`docs/01_DATA_SCHEMA.md` →
+"Per-alias policy model"); the pipeline shape itself is unchanged. No
+SQLite pack, no manifest, no updater, and no CI exist yet, and no external
+source has been ingested. Nothing in this document beyond what
 `docs/04_BUILDER.md` describes runs automatically.
 
 ## Conceptual data pipeline
@@ -48,8 +51,8 @@ EXPC-GVP has three independent version axes. They must never be conflated:
 
 | Axis | What it versions | Scheme | Where recorded |
 |---|---|---|---|
-| **Schema version** | The *contract* (`schema/gvp.schema.json`) | SemVer-like, e.g. `0.1.0` | `x-schema-version` field inside the schema file itself |
-| **Builder version** | The tool that produces build artifacts | SemVer | `__builder_version__` in `tools/builder/__init__.py`. Phase 01.0 MVP starts at `0.1.0-mvp`; not yet published via any manifest/package metadata. |
+| **Schema version** | The *contract* (`schema/gvp.schema.json`) | SemVer-like, e.g. `0.2.0` | `x-schema-version` field inside the schema file itself. See `docs/01_DATA_SCHEMA.md` → "Schema version history" for the changelog. |
+| **Builder version** | The tool that produces build artifacts | SemVer | `__builder_version__` in `tools/builder/__init__.py`. Phase 01.0 MVP started at `0.1.0-mvp`; Phase 01.1 bumped it to `0.2.0-mvp` (per-alias policy resolution). Not yet published via any manifest/package metadata. |
 | **Data Pack version** | A released, versioned bundle of vocabulary data | CalVer (date-based) | A future `manifest.json`, once releases exist |
 
 A new Data Pack release does **not** imply a new schema version — most

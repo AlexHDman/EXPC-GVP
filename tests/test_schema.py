@@ -1,9 +1,14 @@
 """
-Phase 00.2 tests for EXPC-GVP.
+Phase 00.2 tests for EXPC-GVP (extended in Phase 01.1 for per-alias
+structured aliases).
 
 Scope: schema validity + fixture data (data/curated/) correctness only.
-No Builder, no SQLite pack, no manifest/updater, no CI wiring is assumed
-or exercised here -- see docs/00_ARCHITECTURE.md for what does not exist yet.
+Only `tools.builder.policy.alias_text` is imported from the Builder, to
+extract alias text uniformly across the legacy string and structured
+object representations -- no other Builder behavior (pipeline
+orchestration, collision analysis, SQLite pack, manifest/updater, CI) is
+assumed or exercised here. See tests/test_builder.py for Builder-specific
+tests and docs/00_ARCHITECTURE.md for what does not exist yet.
 """
 import glob
 import json
@@ -12,6 +17,8 @@ import unicodedata
 
 import jsonschema
 import pytest
+
+from tools.builder.policy import alias_text
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCHEMA_PATH = os.path.join(REPO_ROOT, "schema", "gvp.schema.json")
@@ -152,7 +159,7 @@ def test_alias_keys_are_valid_language_codes(path):
 def test_no_duplicate_aliases_inside_entity(path):
     data = _load_fixture(path)
     for lang_code, forms in data["aliases"].items():
-        lowered = [f.lower() for f in forms]
+        lowered = [alias_text(f).lower() for f in forms]
         duplicates = {f for f in lowered if lowered.count(f) > 1}
         assert not duplicates, (
             f"{path}: duplicate alias(es) within aliases['{lang_code}']: {duplicates}"
@@ -164,8 +171,9 @@ def test_aliases_are_unicode_nfc_normalized(path):
     data = _load_fixture(path)
     for lang_code, forms in data["aliases"].items():
         for form in forms:
-            assert form == unicodedata.normalize("NFC", form), (
-                f"{path}: alias '{form}' in aliases['{lang_code}'] is not NFC-normalized"
+            text = alias_text(form)
+            assert text == unicodedata.normalize("NFC", text), (
+                f"{path}: alias '{text}' in aliases['{lang_code}'] is not NFC-normalized"
             )
 
 
@@ -174,7 +182,7 @@ def test_fixture_includes_russian_unicode_aliases(entities):
     # alias data, not just ASCII.
     has_cyrillic = any(
         any(
-            any(0x0400 <= ord(ch) <= 0x04FF for ch in form)
+            any(0x0400 <= ord(ch) <= 0x04FF for ch in alias_text(form))
             for forms in data["aliases"].values()
             for form in forms
         )
@@ -197,7 +205,7 @@ def test_no_alias_collisions_between_entities(entities):
     for path, data in entities:
         for lang_code, forms in data["aliases"].items():
             for form in forms:
-                key = (lang_code, form.lower())
+                key = (lang_code, alias_text(form).lower())
                 alias_owners.setdefault(key, set()).add(data["id"])
 
     collisions = {k: v for k, v in alias_owners.items() if len(v) > 1}

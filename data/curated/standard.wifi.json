@@ -5,13 +5,21 @@
   "layer": "global",
   "language": "en",
   "aliases": {
-    "ru": ["вайфай", "вафля"]
+    "ru": [
+      "вайфай",
+      {
+        "value": "вафля",
+        "ambiguity": "medium",
+        "policy": "canonical_preferred",
+        "auto_replace": false
+      }
+    ]
   },
   "ru_equivalent": null,
   "ru_transcription": "Вай-Фай",
   "policy": "canonical_preferred",
-  "ambiguity": "medium",
-  "auto_replace": false,
+  "ambiguity": "low",
+  "auto_replace": true,
   "provenance": {
     "source": "curated",
     "source_url": null,

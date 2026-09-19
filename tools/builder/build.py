@@ -11,13 +11,15 @@ Builder pipeline orchestration (Phase 01.0 MVP):
             |
     normalization for comparison      (normalize.py, used by the stages above/below)
             |
-    collision analysis                (collisions.py)
+    collision analysis                (collisions.py, alias-level since Phase 01.1
+                                        via policy.py's effective-policy resolution)
             |
     deterministic build artifact      (this module: _write_artifact_atomically)
 
 Mirrors docs/00_ARCHITECTURE.md's conceptual pipeline diagram, scoped down
-to what Phase 01.0 actually implements (no dedup/canonicalization/source
-validation stages yet -- those require sources this repo does not have).
+to what Phase 01.0/01.1 actually implements (no dedup/canonicalization/
+source validation stages yet -- those require sources this repo does not
+have).
 
 Every stage after the first failing one is skipped, and dist/gvp.json is
 only ever written once every stage has passed with zero blocking issues.
