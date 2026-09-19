@@ -1,0 +1,23 @@
+{
+  "id": "standard.wifi",
+  "canonical": "Wi-Fi",
+  "kind": "standard",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": ["вайфай", "вафля"]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Вай-Фай",
+  "policy": "canonical_preferred",
+  "ambiguity": "medium",
+  "auto_replace": false,
+  "provenance": {
+    "source": "curated",
+    "source_url": null,
+    "source_id": null,
+    "license": null,
+    "confidence": 0.5,
+    "last_verified": null
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "software.cuda",
+  "canonical": "CUDA",
+  "kind": "software",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": ["куда"]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "КУДА",
+  "policy": "context_required",
+  "ambiguity": "high",
+  "auto_replace": false,
+  "provenance": {
+    "source": "curated",
+    "source_url": null,
+    "source_id": null,
+    "license": null,
+    "confidence": 0.5,
+    "last_verified": null
+  }
+}

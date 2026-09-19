@@ -1,0 +1,23 @@
+{
+  "id": "ai_model.claude",
+  "canonical": "Claude",
+  "kind": "ai_model",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": ["клод", "клауд"]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Клод",
+  "policy": "canonical_preferred",
+  "ambiguity": "medium",
+  "auto_replace": false,
+  "provenance": {
+    "source": "curated",
+    "source_url": null,
+    "source_id": null,
+    "license": null,
+    "confidence": 0.5,
+    "last_verified": null
+  }
+}

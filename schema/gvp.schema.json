@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AlexHDman/EXPC-GVP/blob/main/schema/gvp.schema.json",
+  "title": "EXPC-GVP Vocabulary Entity",
+  "x-schema-version": "0.1.0",
+  "$comment": "x-schema-version is EXPC-GVP-specific metadata, not a JSON Schema keyword. See docs/01_DATA_SCHEMA.md for the versioning model (schema version vs Builder SemVer vs Data Pack CalVer) and for design decisions referenced below.",
+  "description": "Contract for a single EXPC Global Vocabulary Pack entity. One JSON document (or one array element, depending on how a data pack chooses to store entities) must validate against this schema per vocabulary entity.",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "layer",
+    "language",
+    "canonical",
+    "aliases",
+    "ru_equivalent",
+    "ru_transcription",
+    "policy",
+    "ambiguity",
+    "auto_replace",
+    "provenance"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$",
+      "description": "Stable machine identifier, conventionally '<kind>.<slug>' (e.g. 'brand.microsoft'). Once published, an id must never be reused for a different entity. Consistency between the id prefix and the 'kind' field is a repository convention enforced by tests/, not by this schema (kind values may gain dashes/segments over time that would complicate a single regex)."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["brand", "software", "ai_model", "hardware", "standard", "networking"],
+      "description": "Semantic category of the entity. Deliberately a closed, small enum aligned 1:1 with the data/ subdirectory taxonomy established in Phase 00.1 (brands, software, ai, hardware, standards, networking). NOT the same axis as 'layer' -- a company (kind=brand) can still be public/Global (layer=global)."
+    },
+    "layer": {
+      "type": "string",
+      "enum": ["global", "domain", "organization", "personal"],
+      "description": "Vocabulary layer per docs/02_VOCABULARY_LAYERS.md. The public EXPC-GVP repository's data/ directory must only ever contain layer='global' or layer='domain' entries. 'organization' and 'personal' are valid schema values (the same schema may be reused by private, non-public vocabulary stores) but must never appear as real entities in this public repository."
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+      "description": "ISO 639-1 language/script code of the 'canonical' spelling itself (e.g. 'en' for 'Microsoft'), not the nationality of the entity behind it."
+    },
+    "canonical": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The canonical original spelling. Always preferred by default ('prefer canonical original'). Must not be a translation and must not be a transcription -- see docs/01_DATA_SCHEMA.md."
+    },
+    "aliases": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^[a-z]{2}$": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true,
+          "minItems": 1
+        }
+      },
+      "description": "Alternate spoken/written forms, keyed by ISO 639-1 language code. May be an empty object ({}) if no aliases are known yet -- the key must still be present (fail-safe explicitness, see provenance below for the same principle). Aliases are informal/variant forms; they are not translations (see 'ru_equivalent') and not the preferred phonetic rendering (see 'ru_transcription')."
+    },
+    "ru_equivalent": {
+      "type": ["string", "null"],
+      "description": "An actual Russian-language semantic equivalent/translation of the canonical term, when one genuinely exists and is distinct from a phonetic rendering (e.g. canonical 'mouse' -> ru_equivalent 'мышь'). null means no established Russian equivalent exists -- this is the expected, common value for untranslated proper nouns/brand names, not a placeholder for missing data."
+    },
+    "ru_transcription": {
+      "type": ["string", "null"],
+      "description": "The preferred phonetic Cyrillic rendering of 'canonical' (e.g. 'Майкрософт' for 'Microsoft'). This is distinct from 'aliases.ru', which may contain multiple informal/variant spoken forms in addition to (or instead of) this preferred rendering. null means no transcription has been curated yet."
+    },
+    "policy": {
+      "type": "string",
+      "enum": ["canonical_preferred", "context_required"],
+      "description": "Replacement-strategy classification -- see docs/03_COLLISION_POLICY.md. This enum may gain values in a future minor schema version; a consumer that encounters an unrecognized policy value MUST fail safe and treat it as 'context_required'."
+    },
+    "ambiguity": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "Collision/ambiguity classification -- see docs/03_COLLISION_POLICY.md."
+    },
+    "auto_replace": {
+      "type": "boolean",
+      "description": "Whether a consumer may safely replace a matched alias with 'canonical' without additional context/boundary checks. See the cross-field constraints below: high ambiguity and policy=context_required both force this to false."
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source", "source_url", "source_id", "license", "confidence", "last_verified"],
+      "additionalProperties": true,
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["official", "curated", "community", "unverified"],
+          "description": "'official' = obtained directly from a reviewed, authoritative source per SOURCES.md. 'curated' = authored/compiled by an EXPC-GVP contributor from general knowledge, not yet run through the SOURCES.md review process. 'community' = contributed by a third party. 'unverified' = explicitly not checked."
+        },
+        "source_url": {
+          "type": ["string", "null"],
+          "pattern": "^https?://\\S+$",
+          "description": "URL of the reviewed source, or null if none has been recorded yet. Pattern is a loose sanity check, not a strict URI format validation (no extra format-validation dependency is used at this phase)."
+        },
+        "source_id": { "type": ["string", "null"] },
+        "license": { "type": ["string", "null"] },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Curator confidence in the correctness/currency of this entity, 0-1. Not a substitute for provenance.source -- a high confidence value does not imply the entity has been through formal source review."
+        },
+        "last_verified": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "description": "Date (YYYY-MM-DD) this entity's provenance fields were last confirmed, or null if never formally verified against SOURCES.md."
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["ambiguity"],
+        "properties": { "ambiguity": { "const": "high" } }
+      },
+      "then": {
+        "required": ["auto_replace"],
+        "properties": { "auto_replace": { "const": false } }
+      }
+    },
+    {
+      "if": {
+        "required": ["policy"],
+        "properties": { "policy": { "const": "context_required" } }
+      },
+      "then": {
+        "required": ["auto_replace"],
+        "properties": { "auto_replace": { "const": false } }
+      }
+    }
+  ]
+}

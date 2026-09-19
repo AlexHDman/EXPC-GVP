@@ -1,0 +1,64 @@
+EXPC-GVP — Licensing Status (Phase 00 Foundation)
+==================================================
+
+This file records the current licensing status of this repository. It is a
+foundation-stage statement, not a final legal determination for every part
+of the project.
+
+1. Code and tooling
+--------------------
+
+Original code and tooling authored in this repository (e.g. anything that
+will later appear under `tools/`, `schema/`, `tests/`) is licensed under the
+MIT License, reproduced below. This choice covers **code only**.
+
+2. Curated / aggregated data
+-----------------------------
+
+No licensing model has been selected yet for the curated/aggregated
+vocabulary data that lives (or will eventually live) under `data/`. As of
+Phase 00.2, `data/curated/` contains a small curator-authored fixture/test
+dataset (see `SOURCES.md`, `THIRD_PARTY_NOTICES.md`) used only to validate
+`schema/gvp.schema.json`; no external data has been imported, and no license
+has been chosen for this or any future dataset content.
+
+3. OPEN DECISIONS (not yet resolved)
+-------------------------------------
+
+The following must be explicitly decided and recorded in a future Source
+Policy review before any data import takes place:
+
+- OPEN: final license for curated/aggregated data produced by this project.
+- OPEN: compatibility review of external source licenses/terms before any
+  external source is imported (per-source, see `SOURCES.md`).
+- OPEN: provenance requirements and how provenance is recorded per entry.
+- OPEN: database rights and redistribution constraints that may apply in
+  jurisdictions recognizing sui generis database rights, and how those
+  constraints interact with redistribution of a compiled data package.
+
+No claim is made in this repository about rights to any external data. No
+external data has been imported.
+
+--------------------------------------------------------------------------
+
+MIT License (applies to original code/tooling in this repository only)
+
+Copyright (c) 2026 EXPC-GVP contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to
+deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
