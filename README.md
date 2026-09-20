@@ -23,11 +23,10 @@ work.
 
 Current production Data Pack: **`2026.09.20.2`**
 
-Tagged `gvp-2026.09.20.2` per `docs/06_RELEASE_CONTRACT.md`, with three
-release assets: `gvp.json`, `manifest.json`, `checksums.sha256`. See the
-repository's [Releases page](https://github.com/AlexHDman/EXPC-GVP/releases)
-for the published GitHub Release once available. Verify a downloaded
-release with:
+Published as a [GitHub Release](https://github.com/AlexHDman/EXPC-GVP/releases),
+tagged `gvp-2026.09.20.2` per `docs/06_RELEASE_CONTRACT.md`, with three
+release assets: `gvp.json`, `manifest.json`, `checksums.sha256`. Verify a
+downloaded release with:
 
 ```
 py -3.12 -m tools.builder verify <path-to-downloaded-release>
@@ -100,23 +99,27 @@ deterministic `dist/gvp.json`. `package` wraps that same artifact into a
 versioned, checksummed local Data Pack (`manifest.json` +
 `checksums.sha256`), `verify` checks one standalone, and `release-check`
 validates one against a `gvp-<CalVer>` Git tag — all entirely local, no
-GitHub API or network access. See `docs/04_BUILDER.md`,
+GitHub API or network access — this repository's own tooling does not
+create the GitHub Release itself (`2026.09.20.2` was published manually
+following this contract). See `docs/04_BUILDER.md`,
 `docs/05_DISTRIBUTION.md`, and `docs/06_RELEASE_CONTRACT.md` for the full
 pipeline, output format, and — importantly — what none of this does yet
-(no SQLite, no actual GitHub Release, no updater, no network downloader,
-no consumer integration, no CI).
+(no SQLite, no updater, no network downloader, no consumer integration,
+no CI).
 
-## Planned distribution model
+## Distribution model
 
-Data is intended to be distributed as versioned packages, roughly as:
+Versioned packages are distributed as:
 
 ```
-local package (implemented) -> GitHub Releases -> updater -> atomic update
+local package -> GitHub Release (implemented, e.g. gvp-2026.09.20.2) -> updater -> atomic update
 ```
 
-Local, versioned packaging with a manifest and SHA-256 checksums now
-exists (`docs/05_DISTRIBUTION.md`). Publishing that package as a GitHub
-Release, and any updater/downloader that consumes it, is **not
+Local, versioned packaging with a manifest and SHA-256 checksums exists
+(`docs/05_DISTRIBUTION.md`), and publishing that package as a GitHub
+Release is now implemented as a manual, reviewed process
+(`docs/06_RELEASE_CONTRACT.md`) — `2026.09.20.2` is published this way.
+An updater/downloader that consumes a release automatically is **not
 implemented yet**.
 
 ## Explicitly not implemented yet
@@ -125,19 +128,21 @@ The following do not exist in the repository at this stage and should not be
 assumed to work:
 
 - a SQLite (or any other) compiled data pack
-- GitHub Release publishing
+- an automated/CI-driven GitHub Release publishing pipeline (publishing
+  itself is implemented, but as a manual, reviewed step per
+  `docs/06_RELEASE_CONTRACT.md` — not automation)
 - an updater or network downloader
 - GitHub Actions / CI
 - consumer integration (EXPC-WLK or any other consumer)
 - any Wikidata import or other bulk external dataset
 - ingestion from any source other than `data/curated/*.json`
 
-The schema, fixture data, and Builder that do exist (`schema/`,
-`data/curated/`, `tools/builder/`) validate and build from that fixture
-data, and can package/verify a local Data Pack — they are not a
-production dataset, pipeline, or release process — see
+The schema, production dataset (`data/curated/`), and Builder that do
+exist (`schema/`, `tools/builder/`) validate, build, and package the
+current Data Pack, which is published as a GitHub Release — but an
+updater, consumer integration, and CI remain future work — see
 `docs/01_DATA_SCHEMA.md`, `docs/04_BUILDER.md`, `docs/05_DISTRIBUTION.md`,
-and `SOURCES.md`.
+`docs/06_RELEASE_CONTRACT.md`, and `SOURCES.md`.
 
 ## Related documents
 
@@ -177,12 +182,10 @@ README описывает то, что реализовано, а не буду�
 
 Текущий production Data Pack: **`2026.09.20.2`**
 
-Отмечен тегом `gvp-2026.09.20.2` согласно
-`docs/06_RELEASE_CONTRACT.md`, с тремя ассетами релиза: `gvp.json`,
-`manifest.json`, `checksums.sha256`. См. страницу
-[Releases](https://github.com/AlexHDman/EXPC-GVP/releases) репозитория
-для опубликованного GitHub Release, когда он будет доступен. Проверить
-скачанный релиз:
+Опубликован как [GitHub Release](https://github.com/AlexHDman/EXPC-GVP/releases),
+отмечен тегом `gvp-2026.09.20.2` согласно `docs/06_RELEASE_CONTRACT.md`,
+с тремя ассетами релиза: `gvp.json`, `manifest.json`, `checksums.sha256`.
+Проверить скачанный релиз:
 
 ```
 py -3.12 -m tools.builder verify <путь-к-скачанному-релизу>
@@ -259,25 +262,28 @@ py -3.12 -m tools.builder release-check --tag gvp-2026.09.20.1 dist/2026.09.20.1
 этот же артефакт в версионированный локальный Data Pack (`manifest.json`
 + `checksums.sha256`), `verify` проверяет такой пакет отдельно, а
 `release-check` проверяет его против Git-тега `gvp-<CalVer>` — всё
-полностью локально, без GitHub API и сети. Полное описание pipeline,
+полностью локально, без GitHub API и сети — сам инструментарий
+репозитория не создаёт GitHub Release самостоятельно (`2026.09.20.2`
+опубликован вручную по этому контракту). Полное описание pipeline,
 формата output и — что важно — того, чего это пока НЕ делает (нет
-SQLite, реального GitHub Release, updater, сетевого загрузчика,
-интеграции с потребителями, CI) — см. `docs/04_BUILDER.md`,
-`docs/05_DISTRIBUTION.md` и `docs/06_RELEASE_CONTRACT.md`.
+SQLite, updater, сетевого загрузчика, интеграции с потребителями, CI) —
+см. `docs/04_BUILDER.md`, `docs/05_DISTRIBUTION.md` и
+`docs/06_RELEASE_CONTRACT.md`.
 
-## Планируемая модель доставки
+## Модель доставки
 
-Данные предполагается распространять как версионируемые пакеты, примерно
-по схеме:
+Версионированные пакеты распространяются по схеме:
 
 ```
-локальный пакет (реализовано) -> GitHub Releases -> updater -> atomic update
+локальный пакет -> GitHub Release (реализовано, напр. gvp-2026.09.20.2) -> updater -> atomic update
 ```
 
 Локальная версионированная упаковка с manifest и SHA-256 контрольными
-суммами уже реализована (`docs/05_DISTRIBUTION.md`). Публикация этого
-пакета как GitHub Release и любой updater/загрузчик, использующий его,
-**пока не реализованы**.
+суммами реализована (`docs/05_DISTRIBUTION.md`), а публикация пакета как
+GitHub Release теперь реализована как ручной, проверяемый процесс
+(`docs/06_RELEASE_CONTRACT.md`) — `2026.09.20.2` опубликован именно так.
+Updater/загрузчик, автоматически потребляющий релиз, **пока не
+реализован**.
 
 ## Явно не реализовано на этом этапе
 
@@ -285,7 +291,9 @@ SQLite, реального GitHub Release, updater, сетевого загру�
 считаться работающим:
 
 - скомпилированный пакет данных (SQLite или любой другой)
-- публикация GitHub Release
+- автоматизированный/CI-driven pipeline публикации GitHub Release
+  (сама публикация реализована, но как ручной проверяемый шаг по
+  `docs/06_RELEASE_CONTRACT.md` — не автоматизация)
 - updater или сетевой загрузчик
 - GitHub Actions / CI
 - интеграция с потребителями (EXPC-WLK или любым другим)
