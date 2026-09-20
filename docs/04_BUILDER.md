@@ -1,13 +1,17 @@
-# Builder (Phase 01.0 MVP, extended in Phase 01.1)
+# Builder (Phase 01.0 MVP, extended in Phase 01.1 and 02.0)
 
 **Status: minimal, working, and narrow in scope.** `tools/builder/` exists
-(`__builder_version__ = "0.2.0-mvp"`) and produces a real, deterministic
+(`__builder_version__ = "0.2.1-mvp"`) and produces a real, deterministic
 artifact from the curated fixture data. It is not a general-purpose data
 pipeline yet — see "Explicitly out of scope" below before assuming it does
 more than it does. Phase 01.1 added per-alias effective-policy resolution
 (`tools/builder/policy.py`) and alias-granularity collision analysis; see
 `docs/01_DATA_SCHEMA.md` → "Per-alias policy model" for the data model
-this implements.
+this implements. Phase 02.0 added the `package` and `verify` CLI commands
+on top of the `build` command documented below — versioned local Data
+Pack packaging and standalone integrity verification, entirely separate
+from the `build`/`dist/gvp.json` pipeline this document covers. See
+`docs/05_DISTRIBUTION.md` for `package`/`verify`.
 
 ## Command
 
@@ -171,12 +175,15 @@ which counted flagged *entities*.
 On failure, the summary stops at the first failing stage and prints
 `BUILD: FAIL`; the process exits non-zero.
 
-## Explicitly out of scope (Phase 01.0)
+## Explicitly out of scope (Phase 01.0 `build` command)
 
-Not implemented by this Builder, and not to be assumed working:
+Not implemented by the `build` command described above, and not to be
+assumed working (the `package`/`verify` commands added in Phase 02.0 do
+cover a release manifest and SHA-256 checksums — see
+`docs/05_DISTRIBUTION.md` — everything else below is still out of scope
+project-wide):
 
 - SQLite (or any other compiled) data pack
-- a release manifest, SHA-256 checksums, or any updater
 - GitHub Actions / CI wiring (the Builder must currently be run manually)
 - GitHub Releases or tags
 - Wikidata import or any other external source adapter
@@ -206,3 +213,9 @@ isolation) live in `tests/test_policy.py`. Run with:
 ```
 py -3.12 -m pytest tests/
 ```
+
+## Related documents
+
+- `docs/05_DISTRIBUTION.md` — Phase 02.0's `package`/`verify` commands,
+  which reuse this pipeline's `assemble_artifact()` to build the same
+  artifact bytes for a versioned Data Pack
