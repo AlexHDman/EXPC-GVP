@@ -5,17 +5,19 @@ Validates data/curated/*.json against schema/gvp.schema.json, runs
 cross-record semantic checks and collision analysis, and writes a
 deterministic dist/gvp.json artifact. Since Phase 02.0 it can also
 package that same artifact into a versioned Data Pack (manifest.json +
-checksums.sha256) and verify one. See docs/00_ARCHITECTURE.md for where
-this fits in the (still mostly conceptual) pipeline, and
-docs/01_DATA_SCHEMA.md for why Builder SemVer is a version axis
-independent of the schema version and the Data Pack CalVer
-(docs/05_DISTRIBUTION.md).
+checksums.sha256) and verify one. Since Phase 02.1 it can also validate a
+package directory as a release candidate for a given Git tag
+(docs/06_RELEASE_CONTRACT.md), entirely locally. See
+docs/00_ARCHITECTURE.md for where this fits in the (still mostly
+conceptual) pipeline, and docs/01_DATA_SCHEMA.md for why Builder SemVer
+is a version axis independent of the schema version and the Data Pack
+CalVer (docs/05_DISTRIBUTION.md).
 
-Phase 02.0 scope only: no SQLite, no compression, no updater, no CI, no
-GitHub Release/tag, no network access.
+Phase 02.1 scope only: no SQLite, no compression, no updater, no CI, no
+GitHub API/network access, no actual Git tag or GitHub Release creation.
 """
 
-__builder_version__ = "0.2.1-mvp"
+__builder_version__ = "0.2.2-mvp"
 # 0.1.0-mvp (Phase 01.0): initial load/validate/collision-analyze/write
 # pipeline against data/curated/*.json.
 #
@@ -41,3 +43,11 @@ __builder_version__ = "0.2.1-mvp"
 # (both moved together, 0.1.0 -> 0.2.0) -- Phase 02.0 doesn't touch the
 # schema, so it doesn't earn a new Builder MINOR either. See
 # docs/05_DISTRIBUTION.md.
+#
+# 0.2.2-mvp (Phase 02.1): adds `release-check` (local, offline validation
+# of a package directory as a release candidate for a `gvp-<CalVer>` Git
+# tag -- tools/builder/release.py) plus the pure tag-parsing/numeric-
+# CalVer-comparison helpers it's built on. Another PATCH, for the same
+# reason as 0.2.1: new local tooling around the existing package/verify
+# contract, no schema change, no change to `build`/`package`/`verify`
+# themselves. See docs/06_RELEASE_CONTRACT.md.

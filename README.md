@@ -6,17 +6,18 @@
 
 ## Status
 
-**Early development / Phase 02.0.** A vocabulary entity schema
+**Early development / Phase 02.1.** A vocabulary entity schema
 (`schema/gvp.schema.json`), a small curated fixture dataset
 (`data/curated/`), and an early Builder MVP (`tools/builder/`, see
 `docs/04_BUILDER.md`) exist. The Builder validates the fixture data and
 produces an intermediate `dist/gvp.json` artifact. It can also package
-that artifact into a versioned, checksummed local Data Pack and verify
-one standalone (`docs/05_DISTRIBUTION.md`) — but only locally: there is
-still no GitHub Release publishing, no updater, no network downloader, no
-consumer integration, and no CI/CD. This README describes the intended
-purpose and shape of the project, not features that are not yet
-implemented.
+that artifact into a versioned, checksummed local Data Pack, verify one
+standalone, and validate one as a release candidate for a `gvp-<CalVer>`
+Git tag (`docs/05_DISTRIBUTION.md`, `docs/06_RELEASE_CONTRACT.md`) — but
+only locally: there is still no GitHub Release publishing, no GitHub API
+client, no updater, no network downloader, no consumer integration, and
+no CI/CD. This README describes the intended purpose and shape of the
+project, not features that are not yet implemented.
 
 ## What this is
 
@@ -67,7 +68,7 @@ EXPC-GVP is a **public** project. Only public, non-personal vocabulary data
 is in scope for this repository. Personal, private, or organization-internal
 data is explicitly out of scope for the public pack (see `SECURITY.md`).
 
-## Builder (Phase 01.0-02.0)
+## Builder (Phase 01.0-02.1)
 
 A minimal, working Builder exists at `tools/builder/`. Run from the
 repository root:
@@ -76,17 +77,20 @@ repository root:
 py -3.12 -m tools.builder build
 py -3.12 -m tools.builder package --version 2026.09.20.1
 py -3.12 -m tools.builder verify dist/2026.09.20.1
+py -3.12 -m tools.builder release-check --tag gvp-2026.09.20.1 dist/2026.09.20.1
 ```
 
 `build` loads `data/curated/*.json`, validates each entity against
 `schema/gvp.schema.json`, runs semantic and collision checks, and writes a
 deterministic `dist/gvp.json`. `package` wraps that same artifact into a
 versioned, checksummed local Data Pack (`manifest.json` +
-`checksums.sha256`), and `verify` checks one standalone. See
-`docs/04_BUILDER.md` and `docs/05_DISTRIBUTION.md` for the full pipeline,
-output format, and — importantly — what none of this does yet (no
-SQLite, no GitHub Release, no updater, no network downloader, no consumer
-integration, no CI).
+`checksums.sha256`), `verify` checks one standalone, and `release-check`
+validates one against a `gvp-<CalVer>` Git tag — all entirely local, no
+GitHub API or network access. See `docs/04_BUILDER.md`,
+`docs/05_DISTRIBUTION.md`, and `docs/06_RELEASE_CONTRACT.md` for the full
+pipeline, output format, and — importantly — what none of this does yet
+(no SQLite, no actual GitHub Release, no updater, no network downloader,
+no consumer integration, no CI).
 
 ## Planned distribution model
 
@@ -129,6 +133,7 @@ and `SOURCES.md`.
 - `docs/03_COLLISION_POLICY.md` — ambiguity levels and collision handling
 - `docs/04_BUILDER.md` — the Phase 01.0 Builder MVP
 - `docs/05_DISTRIBUTION.md` — Phase 02.0: local Data Pack packaging, manifest, checksums, verification
+- `docs/06_RELEASE_CONTRACT.md` — Phase 02.1: GitHub Release tag/asset contract, local release-candidate check
 - `SOURCES.md` — source policy foundation (no data formally reviewed/imported yet)
 - `THIRD_PARTY_NOTICES.md` — third-party notices (none yet)
 - `CONTRIBUTING.md` — contribution flow
@@ -141,17 +146,18 @@ and `SOURCES.md`.
 
 ## Статус
 
-**Ранняя разработка / Phase 02.0.** Существуют схема словарной сущности
+**Ранняя разработка / Phase 02.1.** Существуют схема словарной сущности
 (`schema/gvp.schema.json`), небольшой curated fixture датасет
 (`data/curated/`) и ранний Builder MVP (`tools/builder/`, см.
 `docs/04_BUILDER.md`). Builder валидирует fixture-данные и создаёт
 промежуточный артефакт `dist/gvp.json`. Он также умеет собирать этот
-артефакт в версионированный локальный Data Pack с контрольными суммами и
-проверять его отдельно (`docs/05_DISTRIBUTION.md`) — но только локально:
-публикации GitHub Release, updater, сетевого загрузчика, интеграции с
-потребителями и CI/CD пока не существует. Этот README описывает
-назначение и планируемую форму проекта, а не только уже реализованные
-функции.
+артефакт в версионированный локальный Data Pack с контрольными суммами,
+проверять его отдельно и проверять его как кандидата релиза для Git-тега
+`gvp-<CalVer>` (`docs/05_DISTRIBUTION.md`, `docs/06_RELEASE_CONTRACT.md`)
+— но только локально: публикации GitHub Release, GitHub API, updater,
+сетевого загрузчика, интеграции с потребителями и CI/CD пока не
+существует. Этот README описывает назначение и планируемую форму
+проекта, а не только уже реализованные функции.
 
 ## Что это
 
@@ -206,7 +212,7 @@ EXPC-GVP — **публичный** проект. В область этого �
 внутриорганизационные данные явно исключены из публичного пакета (см.
 `SECURITY.md`).
 
-## Builder (Phase 01.0-02.0)
+## Builder (Phase 01.0-02.1)
 
 Минимальный рабочий Builder существует в `tools/builder/`. Запуск из
 корня репозитория:
@@ -215,17 +221,20 @@ EXPC-GVP — **публичный** проект. В область этого �
 py -3.12 -m tools.builder build
 py -3.12 -m tools.builder package --version 2026.09.20.1
 py -3.12 -m tools.builder verify dist/2026.09.20.1
+py -3.12 -m tools.builder release-check --tag gvp-2026.09.20.1 dist/2026.09.20.1
 ```
 
 `build` загружает `data/curated/*.json`, валидирует каждую сущность
 против `schema/gvp.schema.json`, выполняет semantic- и collision-проверки
 и записывает детерминированный `dist/gvp.json`. `package` оборачивает
 этот же артефакт в версионированный локальный Data Pack (`manifest.json`
-+ `checksums.sha256`), а `verify` проверяет такой пакет отдельно. Полное
-описание pipeline, формата output и — что важно — того, чего это пока НЕ
-делает (нет SQLite, GitHub Release, updater, сетевого загрузчика,
-интеграции с потребителями, CI) — см. `docs/04_BUILDER.md` и
-`docs/05_DISTRIBUTION.md`.
++ `checksums.sha256`), `verify` проверяет такой пакет отдельно, а
+`release-check` проверяет его против Git-тега `gvp-<CalVer>` — всё
+полностью локально, без GitHub API и сети. Полное описание pipeline,
+формата output и — что важно — того, чего это пока НЕ делает (нет
+SQLite, реального GitHub Release, updater, сетевого загрузчика,
+интеграции с потребителями, CI) — см. `docs/04_BUILDER.md`,
+`docs/05_DISTRIBUTION.md` и `docs/06_RELEASE_CONTRACT.md`.
 
 ## Планируемая модель доставки
 
@@ -269,6 +278,7 @@ production-датасет, pipeline или процесс релиза — см.
 - `docs/03_COLLISION_POLICY.md` — уровни неоднозначности и обработка коллизий
 - `docs/04_BUILDER.md` — Phase 01.0 Builder MVP
 - `docs/05_DISTRIBUTION.md` — Phase 02.0: локальная упаковка Data Pack, manifest, контрольные суммы, verification
+- `docs/06_RELEASE_CONTRACT.md` — Phase 02.1: контракт тега/ассетов GitHub Release, локальная проверка кандидата релиза
 - `SOURCES.md` — основа source policy (данные пока не прошли формальную проверку/импорт)
 - `THIRD_PARTY_NOTICES.md` — уведомления о сторонних данных (пока нет)
 - `CONTRIBUTING.md` — процесс участия в проекте

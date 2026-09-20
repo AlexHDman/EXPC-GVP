@@ -52,3 +52,19 @@ def validate_data_pack_version(version: str) -> None:
         raise DataPackVersionError(
             f"invalid Data Pack version {version!r}: sequence number must be >= 1, got {sequence}"
         )
+
+
+def parse_calver_components(version: str) -> tuple:
+    """
+    Validates `version` (via `validate_data_pack_version`) and returns its
+    (year, month, day, sequence) as a tuple of ints, for *numeric* CalVer
+    comparison. Callers must not compare Data Pack version strings
+    lexically: the sequence number `N` has no fixed width (`\\d+`), so e.g.
+    "2026.09.20.10" < "2026.09.20.9" as strings even though 10 > 9
+    numerically. Comparing the tuples this returns instead gives the
+    correct ordering.
+    """
+    validate_data_pack_version(version)
+    match = CALVER_PATTERN.match(version)
+    year, month, day, sequence = match.groups()
+    return (int(year), int(month), int(day), int(sequence))

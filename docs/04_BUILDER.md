@@ -1,7 +1,7 @@
-# Builder (Phase 01.0 MVP, extended in Phase 01.1 and 02.0)
+# Builder (Phase 01.0 MVP, extended in Phase 01.1, 02.0, and 02.1)
 
 **Status: minimal, working, and narrow in scope.** `tools/builder/` exists
-(`__builder_version__ = "0.2.1-mvp"`) and produces a real, deterministic
+(`__builder_version__ = "0.2.2-mvp"`) and produces a real, deterministic
 artifact from the curated fixture data. It is not a general-purpose data
 pipeline yet — see "Explicitly out of scope" below before assuming it does
 more than it does. Phase 01.1 added per-alias effective-policy resolution
@@ -10,8 +10,11 @@ more than it does. Phase 01.1 added per-alias effective-policy resolution
 this implements. Phase 02.0 added the `package` and `verify` CLI commands
 on top of the `build` command documented below — versioned local Data
 Pack packaging and standalone integrity verification, entirely separate
-from the `build`/`dist/gvp.json` pipeline this document covers. See
-`docs/05_DISTRIBUTION.md` for `package`/`verify`.
+from the `build`/`dist/gvp.json` pipeline this document covers. Phase
+02.1 added `release-check` — local, offline validation of a package
+directory against a `gvp-<CalVer>` Git tag, no GitHub API or network
+access. See `docs/05_DISTRIBUTION.md` for `package`/`verify` and
+`docs/06_RELEASE_CONTRACT.md` for `release-check`.
 
 ## Command
 
@@ -219,3 +222,6 @@ py -3.12 -m pytest tests/
 - `docs/05_DISTRIBUTION.md` — Phase 02.0's `package`/`verify` commands,
   which reuse this pipeline's `assemble_artifact()` to build the same
   artifact bytes for a versioned Data Pack
+- `docs/06_RELEASE_CONTRACT.md` — Phase 02.1's `release-check` command,
+  which reuses `verify.py: verify_package` to validate a package
+  directory against a Git tag, entirely locally

@@ -239,3 +239,9 @@ for that tag/version. `verify_package()` is written to only need a local
 directory, so it would apply unchanged to a downloaded-and-extracted
 release without modification. None of that (creating the release,
 downloading assets, wiring a tag to a Data Pack version) exists yet.
+
+Phase 02.1 (`docs/06_RELEASE_CONTRACT.md`) now defines exactly how a tag
+name maps to this Data Pack version (`gvp-<CalVer>`) and adds a local,
+offline `release-check` command that validates a package directory
+against a tag by re-using `verify_package()` above — still no GitHub API,
+network access, or actual tag/Release creation.

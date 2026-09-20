@@ -1,17 +1,20 @@
-# Architecture (Conceptual — Phase 00 / Builder MVP — Phase 01.0-02.0)
+# Architecture (Conceptual — Phase 00 / Builder MVP — Phase 01.0-02.1)
 
-**Status.** As of Phase 02.0, a minimal Builder (`tools/builder/`) exists
+**Status.** As of Phase 02.1, a minimal Builder (`tools/builder/`) exists
 and implements a small slice of the pipeline below against
 `data/curated/*.json` only — see `docs/04_BUILDER.md` for exactly what it
 does. Phase 01.1 added per-alias effective-policy resolution and
 alias-granularity collision analysis (`docs/01_DATA_SCHEMA.md` →
 "Per-alias policy model"); Phase 02.0 added local Data Pack packaging and
-standalone verification (`docs/05_DISTRIBUTION.md`) on top of the same
-`build` pipeline — the pipeline shape itself is unchanged. No SQLite
-pack, no GitHub Release, no updater, no network downloader, no consumer
-integration, and no CI exist yet, and no external source has been
-ingested. Nothing in this document beyond what `docs/04_BUILDER.md` and
-`docs/05_DISTRIBUTION.md` describe runs automatically.
+standalone verification (`docs/05_DISTRIBUTION.md`); Phase 02.1 defined
+the GitHub Release *contract* (tag naming, release assets, a local
+offline `release-check` command) without creating any actual tag or
+Release (`docs/06_RELEASE_CONTRACT.md`) — the pipeline shape itself is
+unchanged. No SQLite pack, no actual GitHub Release, no GitHub API
+client, no updater, no network downloader, no consumer integration, and
+no CI exist yet, and no external source has been ingested. Nothing in
+this document beyond what `docs/04_BUILDER.md`, `docs/05_DISTRIBUTION.md`,
+and `docs/06_RELEASE_CONTRACT.md` describe runs automatically.
 
 ## Conceptual data pipeline
 
@@ -58,7 +61,7 @@ EXPC-GVP has three independent version axes. They must never be conflated:
 | Axis | What it versions | Scheme | Where recorded |
 |---|---|---|---|
 | **Schema version** | The *contract* (`schema/gvp.schema.json`) | SemVer-like, e.g. `0.2.0` | `x-schema-version` field inside the schema file itself. See `docs/01_DATA_SCHEMA.md` → "Schema version history" for the changelog. |
-| **Builder version** | The tool that produces build artifacts | SemVer | `__builder_version__` in `tools/builder/__init__.py`. Phase 01.0 MVP started at `0.1.0-mvp`; Phase 01.1 bumped it to `0.2.0-mvp` (per-alias policy resolution); Phase 02.0 bumped it to `0.2.1-mvp` (local packaging/verification, no schema change — a PATCH, not a MINOR, since it doesn't earn the MINOR-bump pairing Phase 01.1 established with the schema). Now published via `manifest.json`'s `builder_version` field for every package. |
+| **Builder version** | The tool that produces build artifacts | SemVer | `__builder_version__` in `tools/builder/__init__.py`. Phase 01.0 MVP started at `0.1.0-mvp`; Phase 01.1 bumped it to `0.2.0-mvp` (per-alias policy resolution); Phase 02.0 bumped it to `0.2.1-mvp` (local packaging/verification); Phase 02.1 bumped it to `0.2.2-mvp` (local `release-check` + tag/CalVer helpers). Each of the last two is a PATCH, not a MINOR: new local tooling around the existing artifact, no schema change, so neither earns the MINOR-bump pairing Phase 01.1 established with the schema. Now published via `manifest.json`'s `builder_version` field for every package. |
 | **Data Pack version** | A released, versioned bundle of vocabulary data | CalVer (date-based), e.g. `2026.09.20.1` | `manifest.json`'s `data_pack_version` field, once a package is built. See `docs/05_DISTRIBUTION.md`. |
 
 A new Data Pack release does **not** imply a new schema version — most
@@ -97,3 +100,4 @@ Only entries classified as **Global candidate**, and then reviewed against
 - `docs/03_COLLISION_POLICY.md` — ambiguity levels and collision handling
 - `docs/04_BUILDER.md` — the Phase 01.0 Builder MVP: command, stages, output, limitations
 - `docs/05_DISTRIBUTION.md` — Phase 02.0: Data Pack packaging, manifest, checksums, verification
+- `docs/06_RELEASE_CONTRACT.md` — Phase 02.1: GitHub Release tag/asset contract, local `release-check`
