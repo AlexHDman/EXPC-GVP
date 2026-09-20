@@ -1,0 +1,25 @@
+{
+  "id": "software.ruby_lang",
+  "canonical": "Ruby",
+  "kind": "software",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "руби"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": null,
+  "policy": "canonical_preferred",
+  "ambiguity": "medium",
+  "auto_replace": false,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.ruby-lang.org/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

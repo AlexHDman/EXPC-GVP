@@ -1,0 +1,25 @@
+{
+  "id": "brand.acer",
+  "canonical": "Acer",
+  "kind": "brand",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "асер"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Асер",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.acer.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

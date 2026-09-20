@@ -1,0 +1,25 @@
+{
+  "id": "brand.red_hat",
+  "canonical": "Red Hat",
+  "kind": "brand",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "редхат"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Редхат",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.redhat.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

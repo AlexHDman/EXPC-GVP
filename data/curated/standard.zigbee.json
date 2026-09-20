@@ -1,0 +1,25 @@
+{
+  "id": "standard.zigbee",
+  "canonical": "Zigbee",
+  "kind": "standard",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "зигби"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Зигби",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://csa-iot.org/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

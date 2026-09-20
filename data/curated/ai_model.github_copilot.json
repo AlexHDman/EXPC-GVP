@@ -1,0 +1,25 @@
+{
+  "id": "ai_model.github_copilot",
+  "canonical": "GitHub Copilot",
+  "kind": "ai_model",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "копилот"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": null,
+  "policy": "context_required",
+  "ambiguity": "high",
+  "auto_replace": false,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://openai.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

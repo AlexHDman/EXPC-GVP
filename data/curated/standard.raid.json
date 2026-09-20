@@ -1,0 +1,25 @@
+{
+  "id": "standard.raid",
+  "canonical": "RAID",
+  "kind": "standard",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "рейд"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": null,
+  "policy": "canonical_preferred",
+  "ambiguity": "medium",
+  "auto_replace": false,
+  "provenance": {
+    "source": "curated",
+    "source_url": null,
+    "source_id": null,
+    "license": null,
+    "confidence": 0.5,
+    "last_verified": null
+  }
+}

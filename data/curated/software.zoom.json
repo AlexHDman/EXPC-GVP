@@ -1,0 +1,25 @@
+{
+  "id": "software.zoom",
+  "canonical": "Zoom",
+  "kind": "software",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "зум"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Зум",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.zoom.us/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "software.svelte",
+  "canonical": "Svelte",
+  "kind": "software",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "свелте"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": null,
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://svelte.dev/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

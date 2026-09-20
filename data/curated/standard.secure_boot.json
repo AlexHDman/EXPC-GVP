@@ -1,0 +1,21 @@
+{
+  "id": "standard.secure_boot",
+  "canonical": "Secure Boot",
+  "kind": "standard",
+  "layer": "global",
+  "language": "en",
+  "aliases": {},
+  "ru_equivalent": "безопасная загрузка",
+  "ru_transcription": null,
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://uefi.org/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

@@ -5,7 +5,10 @@
   "layer": "global",
   "language": "en",
   "aliases": {
-    "ru": ["иксрей", "икс-рей"]
+    "ru": [
+      "иксрей",
+      "икс-рей"
+    ]
   },
   "ru_equivalent": null,
   "ru_transcription": "Икс-Рей",
@@ -13,11 +16,11 @@
   "ambiguity": "medium",
   "auto_replace": false,
   "provenance": {
-    "source": "curated",
-    "source_url": null,
+    "source": "official",
+    "source_url": "https://github.com/XTLS/Xray-core",
     "source_id": null,
     "license": null,
-    "confidence": 0.5,
+    "confidence": 0.85,
     "last_verified": null
   }
 }

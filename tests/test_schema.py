@@ -18,7 +18,7 @@ import unicodedata
 import jsonschema
 import pytest
 
-from tools.builder.policy import alias_text
+from tools.builder.policy import alias_text, resolve_effective_policy
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCHEMA_PATH = os.path.join(REPO_ROOT, "schema", "gvp.schema.json")
@@ -82,8 +82,11 @@ def test_schema_is_valid_draft_2020_12(schema):
 
 
 def test_fixture_count_in_expected_range(fixture_paths):
-    # Phase 00.2 asks for a small fixture set, roughly 10-20 entities.
-    assert 10 <= len(fixture_paths) <= 20
+    # Phase 00.2 started with a small fixture set (10-20 entities); Phase
+    # 03 expanded it into the first production-useful Global Vocabulary,
+    # targeting ~400-500 high-value entities (quality over hitting an
+    # exact number -- see docs/01_DATA_SCHEMA.md / Phase 03 brief).
+    assert 400 <= len(fixture_paths) <= 500
 
 
 # --- per-entity schema validation ------------------------------------------
@@ -193,23 +196,32 @@ def test_fixture_includes_russian_unicode_aliases(entities):
 
 # --- collisions between entities -----------------------------------------
 
-def test_no_alias_collisions_between_entities(entities):
+def test_no_blocking_alias_collisions_between_entities(entities):
     """
     An alias string that maps to two or more different entity ids is a
-    collision (docs/03_COLLISION_POLICY.md, "Overlapping aliases"). The
-    curated fixture set is expected to be collision-free; this test is a
-    guard against accidentally introducing one, not a claim that collisions
-    can never legitimately occur in a larger, real-world dataset.
+    collision (docs/03_COLLISION_POLICY.md, "Overlapping aliases"). Since
+    Phase 03's larger real-world vocabulary, a shared alias is no longer
+    assumed impossible -- e.g. "копилот" plausibly names both
+    ai_model.github_copilot and ai_model.microsoft_copilot. What this
+    test guards against is a *blocking* one: every owner of a shared
+    alias must have that alias's EFFECTIVE auto_replace=False (mirroring
+    tools/builder/collisions.py's own blocking-vs-contextual rule), so a
+    consumer is never told it is safe to blindly replace text that could
+    mean two different entities. A safely-flagged shared alias (all
+    owners auto_replace=False) is an expected, non-blocking CONTEXTUAL
+    collision, not a bug to hide.
     """
-    alias_owners = {}  # (lang, normalized alias) -> set of ids
+    alias_owners = {}  # (lang, normalized alias) -> {id: effective_auto_replace}
     for path, data in entities:
         for lang_code, forms in data["aliases"].items():
             for form in forms:
                 key = (lang_code, alias_text(form).lower())
-                alias_owners.setdefault(key, set()).add(data["id"])
+                effective = resolve_effective_policy(form, data)
+                alias_owners.setdefault(key, {})[data["id"]] = effective.auto_replace
 
-    collisions = {k: v for k, v in alias_owners.items() if len(v) > 1}
-    assert not collisions, f"alias(es) shared by multiple entities: {collisions}"
+    shared = {k: v for k, v in alias_owners.items() if len(v) > 1}
+    blocking = {k: v for k, v in shared.items() if any(v.values())}
+    assert not blocking, f"blocking alias collision(s) (some owner auto_replace=True): {blocking}"
 
 
 def test_no_canonical_collisions_between_entities(entities):

@@ -1,0 +1,25 @@
+{
+  "id": "brand.intel",
+  "canonical": "Intel",
+  "kind": "brand",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "интел"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Интел",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.intel.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

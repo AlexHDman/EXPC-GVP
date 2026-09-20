@@ -1,0 +1,25 @@
+{
+  "id": "brand.asus",
+  "canonical": "ASUS",
+  "kind": "brand",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "асус"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Асус",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.asus.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

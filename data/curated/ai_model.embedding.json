@@ -1,0 +1,25 @@
+{
+  "id": "ai_model.embedding",
+  "canonical": "embedding",
+  "kind": "ai_model",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "эмбеддинг"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": null,
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "curated",
+    "source_url": null,
+    "source_id": null,
+    "license": null,
+    "confidence": 0.5,
+    "last_verified": null
+  }
+}

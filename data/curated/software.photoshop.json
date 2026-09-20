@@ -1,0 +1,25 @@
+{
+  "id": "software.photoshop",
+  "canonical": "Adobe Photoshop",
+  "kind": "software",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "фотошоп"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Фотошоп",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.adobe.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "brand.huawei",
+  "canonical": "Huawei",
+  "kind": "brand",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "хуавей"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Хуавей",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.huawei.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

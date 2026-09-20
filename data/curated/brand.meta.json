@@ -1,0 +1,25 @@
+{
+  "id": "brand.meta",
+  "canonical": "Meta",
+  "kind": "brand",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "мета"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Мета",
+  "policy": "canonical_preferred",
+  "ambiguity": "medium",
+  "auto_replace": false,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://about.meta.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

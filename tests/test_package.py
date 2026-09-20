@@ -85,7 +85,7 @@ def test_manifest_contract_correct(tmp_path):
     assert manifest["data_pack_version"] == VALID_VERSION
     assert manifest["schema_version"] == "0.2.0"
     assert manifest["builder_version"] == result.builder_version
-    assert manifest["entity_count"] == 15
+    assert manifest["entity_count"] == len(list(REAL_DATA_DIR.glob("*.json")))
     assert manifest["artifact"]["filename"] == "gvp.json"
     assert manifest["artifact"]["sha256"] == result.artifact_sha256
     # No volatile/local-machine fields.
@@ -117,7 +117,8 @@ def test_entity_count_correct(tmp_path):
     assert result.success
     gvp_data = json.loads((result.package_dir / "gvp.json").read_text(encoding="utf-8"))
     manifest = json.loads((result.package_dir / "manifest.json").read_text(encoding="utf-8"))
-    assert manifest["entity_count"] == len(gvp_data["entities"]) == 15
+    real_count = len(list(REAL_DATA_DIR.glob("*.json")))
+    assert manifest["entity_count"] == len(gvp_data["entities"]) == real_count
 
 
 def test_checksums_file_correct(tmp_path):

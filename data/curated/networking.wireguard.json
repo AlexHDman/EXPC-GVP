@@ -1,0 +1,25 @@
+{
+  "id": "networking.wireguard",
+  "canonical": "WireGuard",
+  "kind": "networking",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "вайргард"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": null,
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.wireguard.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

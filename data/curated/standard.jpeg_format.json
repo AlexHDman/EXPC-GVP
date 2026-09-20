@@ -1,0 +1,25 @@
+{
+  "id": "standard.jpeg_format",
+  "canonical": "JPEG",
+  "kind": "standard",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "джипег"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": null,
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "curated",
+    "source_url": null,
+    "source_id": null,
+    "license": null,
+    "confidence": 0.5,
+    "last_verified": null
+  }
+}

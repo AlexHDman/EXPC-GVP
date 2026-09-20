@@ -1,0 +1,25 @@
+{
+  "id": "brand.google",
+  "canonical": "Google",
+  "kind": "brand",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "гугл"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Гугл",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://about.google/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

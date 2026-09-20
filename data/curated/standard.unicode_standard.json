@@ -1,0 +1,25 @@
+{
+  "id": "standard.unicode_standard",
+  "canonical": "Unicode",
+  "kind": "standard",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "юникод"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Юникод",
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://home.unicode.org/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

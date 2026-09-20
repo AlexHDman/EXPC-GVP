@@ -5,7 +5,9 @@
   "layer": "global",
   "language": "en",
   "aliases": {
-    "ru": ["куда"]
+    "ru": [
+      "куда"
+    ]
   },
   "ru_equivalent": null,
   "ru_transcription": "КУДА",
@@ -13,11 +15,11 @@
   "ambiguity": "high",
   "auto_replace": false,
   "provenance": {
-    "source": "curated",
-    "source_url": null,
+    "source": "official",
+    "source_url": "https://developer.nvidia.com/",
     "source_id": null,
     "license": null,
-    "confidence": 0.5,
+    "confidence": 0.85,
     "last_verified": null
   }
 }

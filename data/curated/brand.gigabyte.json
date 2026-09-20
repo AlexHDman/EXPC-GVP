@@ -1,0 +1,21 @@
+{
+  "id": "brand.gigabyte",
+  "canonical": "Gigabyte",
+  "kind": "brand",
+  "layer": "global",
+  "language": "en",
+  "aliases": {},
+  "ru_equivalent": null,
+  "ru_transcription": null,
+  "policy": "context_required",
+  "ambiguity": "high",
+  "auto_replace": false,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.gigabyte.com/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}

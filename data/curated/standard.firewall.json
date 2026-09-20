@@ -1,0 +1,25 @@
+{
+  "id": "standard.firewall",
+  "canonical": "firewall",
+  "kind": "standard",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "файрвол"
+    ]
+  },
+  "ru_equivalent": "межсетевой экран",
+  "ru_transcription": null,
+  "policy": "canonical_preferred",
+  "ambiguity": "low",
+  "auto_replace": true,
+  "provenance": {
+    "source": "curated",
+    "source_url": null,
+    "source_id": null,
+    "license": null,
+    "confidence": 0.5,
+    "last_verified": null
+  }
+}

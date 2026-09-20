@@ -1,0 +1,26 @@
+{
+  "id": "software.chrome",
+  "canonical": "Google Chrome",
+  "kind": "software",
+  "layer": "global",
+  "language": "en",
+  "aliases": {
+    "ru": [
+      "хром",
+      "гугл хром"
+    ]
+  },
+  "ru_equivalent": null,
+  "ru_transcription": "Хром",
+  "policy": "canonical_preferred",
+  "ambiguity": "medium",
+  "auto_replace": false,
+  "provenance": {
+    "source": "official",
+    "source_url": "https://www.google.com/chrome/",
+    "source_id": null,
+    "license": null,
+    "confidence": 0.85,
+    "last_verified": null
+  }
+}
