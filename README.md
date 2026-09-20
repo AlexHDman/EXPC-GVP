@@ -6,18 +6,32 @@
 
 ## Status
 
-**Early development / Phase 02.1.** A vocabulary entity schema
-(`schema/gvp.schema.json`), a small curated fixture dataset
-(`data/curated/`), and an early Builder MVP (`tools/builder/`, see
-`docs/04_BUILDER.md`) exist. The Builder validates the fixture data and
-produces an intermediate `dist/gvp.json` artifact. It can also package
-that artifact into a versioned, checksummed local Data Pack, verify one
-standalone, and validate one as a release candidate for a `gvp-<CalVer>`
-Git tag (`docs/05_DISTRIBUTION.md`, `docs/06_RELEASE_CONTRACT.md`) — but
-only locally: there is still no GitHub Release publishing, no GitHub API
-client, no updater, no network downloader, no consumer integration, and
-no CI/CD. This README describes the intended purpose and shape of the
-project, not features that are not yet implemented.
+**Production / Maintenance Mode.** EXPC-GVP has reached its first
+production-quality Global Vocabulary Pack: **437 entities**, **267**
+Russian spoken aliases, validated by a vocabulary entity schema
+(`schema/gvp.schema.json`) and a Builder (`tools/builder/`, see
+`docs/04_BUILDER.md`) that packages, checksums, and verifies each release
+(`docs/05_DISTRIBUTION.md`, `docs/06_RELEASE_CONTRACT.md`). See
+"Current release" below for the released version, and
+`docs/07_MAINTENANCE.md` for how future changes are proposed and
+reviewed. Still not implemented: an updater/network downloader, a GitHub
+API client used by this repository itself, and any consumer integration
+— this README describes what exists, not features that remain future
+work.
+
+## Current release
+
+Current production Data Pack: **`2026.09.20.2`**
+
+Tagged `gvp-2026.09.20.2` per `docs/06_RELEASE_CONTRACT.md`, with three
+release assets: `gvp.json`, `manifest.json`, `checksums.sha256`. See the
+repository's [Releases page](https://github.com/AlexHDman/EXPC-GVP/releases)
+for the published GitHub Release once available. Verify a downloaded
+release with:
+
+```
+py -3.12 -m tools.builder verify <path-to-downloaded-release>
+```
 
 ## What this is
 
@@ -134,7 +148,8 @@ and `SOURCES.md`.
 - `docs/04_BUILDER.md` — the Phase 01.0 Builder MVP
 - `docs/05_DISTRIBUTION.md` — Phase 02.0: local Data Pack packaging, manifest, checksums, verification
 - `docs/06_RELEASE_CONTRACT.md` — Phase 02.1: GitHub Release tag/asset contract, local release-candidate check
-- `SOURCES.md` — source policy foundation (no data formally reviewed/imported yet)
+- `docs/07_MAINTENANCE.md` — Production/Maintenance Mode: how future changes are proposed and reviewed
+- `SOURCES.md` — source/provenance policy and current provenance state
 - `THIRD_PARTY_NOTICES.md` — third-party notices (none yet)
 - `CONTRIBUTING.md` — contribution flow
 - `SECURITY.md` — security and privacy reporting
@@ -146,18 +161,32 @@ and `SOURCES.md`.
 
 ## Статус
 
-**Ранняя разработка / Phase 02.1.** Существуют схема словарной сущности
-(`schema/gvp.schema.json`), небольшой curated fixture датасет
-(`data/curated/`) и ранний Builder MVP (`tools/builder/`, см.
-`docs/04_BUILDER.md`). Builder валидирует fixture-данные и создаёт
-промежуточный артефакт `dist/gvp.json`. Он также умеет собирать этот
-артефакт в версионированный локальный Data Pack с контрольными суммами,
-проверять его отдельно и проверять его как кандидата релиза для Git-тега
-`gvp-<CalVer>` (`docs/05_DISTRIBUTION.md`, `docs/06_RELEASE_CONTRACT.md`)
-— но только локально: публикации GitHub Release, GitHub API, updater,
-сетевого загрузчика, интеграции с потребителями и CI/CD пока не
-существует. Этот README описывает назначение и планируемую форму
-проекта, а не только уже реализованные функции.
+**Production / Maintenance Mode.** EXPC-GVP достиг первого
+production-качества Global Vocabulary Pack: **437 сущностей**, **267**
+русских произносимых алиасов, валидируемых схемой словарной сущности
+(`schema/gvp.schema.json`) и Builder'ом (`tools/builder/`, см.
+`docs/04_BUILDER.md`), который собирает, считает контрольные суммы и
+проверяет каждый релиз (`docs/05_DISTRIBUTION.md`,
+`docs/06_RELEASE_CONTRACT.md`). См. «Текущий релиз» ниже и
+`docs/07_MAINTENANCE.md` о том, как предлагаются и проверяются будущие
+изменения. Пока не реализовано: updater/сетевой загрузчик, GitHub API
+клиент внутри самого репозитория и интеграция с потребителями — этот
+README описывает то, что реализовано, а не будущие планы.
+
+## Текущий релиз
+
+Текущий production Data Pack: **`2026.09.20.2`**
+
+Отмечен тегом `gvp-2026.09.20.2` согласно
+`docs/06_RELEASE_CONTRACT.md`, с тремя ассетами релиза: `gvp.json`,
+`manifest.json`, `checksums.sha256`. См. страницу
+[Releases](https://github.com/AlexHDman/EXPC-GVP/releases) репозитория
+для опубликованного GitHub Release, когда он будет доступен. Проверить
+скачанный релиз:
+
+```
+py -3.12 -m tools.builder verify <путь-к-скачанному-релизу>
+```
 
 ## Что это
 
@@ -263,12 +292,12 @@ SQLite, реального GitHub Release, updater, сетевого загру�
 - импорт Wikidata или любого другого массового внешнего датасета
 - загрузка данных из чего-либо, кроме `data/curated/*.json`
 
-Существующие схема, fixture-данные и Builder (`schema/`, `data/curated/`,
-`tools/builder/`) валидируют и собирают именно эти fixture-данные, а
-также умеют собирать/проверять локальный Data Pack — это не
-production-датасет, pipeline или процесс релиза — см.
-`docs/01_DATA_SCHEMA.md`, `docs/04_BUILDER.md`, `docs/05_DISTRIBUTION.md`
-и `SOURCES.md`.
+Существующие схема, production-датасет (`data/curated/`) и Builder
+(`schema/`, `tools/builder/`) валидируют, собирают и упаковывают текущий
+Data Pack (`2026.09.20.2`) — но перечисленное выше (публикация через
+GitHub API, updater, интеграция с потребителями, CI) по-прежнему не
+реализовано — см. `docs/01_DATA_SCHEMA.md`, `docs/04_BUILDER.md`,
+`docs/05_DISTRIBUTION.md`, `docs/07_MAINTENANCE.md` и `SOURCES.md`.
 
 ## Связанные документы
 
@@ -279,7 +308,8 @@ production-датасет, pipeline или процесс релиза — см.
 - `docs/04_BUILDER.md` — Phase 01.0 Builder MVP
 - `docs/05_DISTRIBUTION.md` — Phase 02.0: локальная упаковка Data Pack, manifest, контрольные суммы, verification
 - `docs/06_RELEASE_CONTRACT.md` — Phase 02.1: контракт тега/ассетов GitHub Release, локальная проверка кандидата релиза
-- `SOURCES.md` — основа source policy (данные пока не прошли формальную проверку/импорт)
+- `docs/07_MAINTENANCE.md` — Production/Maintenance Mode: как предлагаются и проверяются будущие изменения
+- `SOURCES.md` — политика источников/provenance и текущее состояние provenance
 - `THIRD_PARTY_NOTICES.md` — уведомления о сторонних данных (пока нет)
 - `CONTRIBUTING.md` — процесс участия в проекте
 - `SECURITY.md` — безопасность и приватность

@@ -1,8 +1,19 @@
 # Contributing to EXPC-GVP
 
-This document describes the foundation-level contribution flow. It will be
-extended as schema, builder, and validation tooling are introduced in later
-phases.
+EXPC-GVP is in **Production / Maintenance Mode** (see
+`docs/07_MAINTENANCE.md` for the full candidate-review flow this document
+summarizes). You can propose:
+
+- a new global term (brand, product, standard, protocol, etc.);
+- a canonical spelling correction;
+- a spoken/informal alias;
+- an ambiguity/collision-safety correction (e.g. an alias that's riskier
+  or safer than currently classified);
+- a provenance correction (a wrong or missing source attribution).
+
+**Do not submit personal, private, or client-specific vocabulary to the
+public GVP** — see `SECURITY.md`. Only `global`/`domain`-layer, publicly
+appropriate vocabulary belongs here (`docs/02_VOCABULARY_LAYERS.md`).
 
 ## Data contributions
 
@@ -34,11 +45,13 @@ phases.
   require a separate, dedicated review — they affect every consumer of the
   vocabulary pack.
 
-## Current phase
+## Current status
 
-This repository is in early development (Phase 01.0). A local test suite
-(`tests/test_schema.py`, `tests/test_builder.py`, run via `pytest`) covers
-schema validation, automated collision detection, and the Builder MVP
-(`tools/builder/`, see `docs/04_BUILDER.md`). Automated CI (GitHub Actions
-or similar) does not exist yet — nothing runs these checks automatically
-on push/PR; `pytest` and the Builder must be run manually.
+EXPC-GVP has published its first production Data Pack (437 entities,
+schema `0.2.0`). A local test suite (`tests/`, run via `pytest`) covers
+schema validation, automated collision detection, and the Builder
+(`tools/builder/`, see `docs/04_BUILDER.md`, `docs/05_DISTRIBUTION.md`,
+`docs/06_RELEASE_CONTRACT.md`). Automated CI (GitHub Actions or similar)
+does not exist yet — nothing runs these checks automatically on push/PR;
+`pytest` and the Builder must be run manually before any change is
+proposed.

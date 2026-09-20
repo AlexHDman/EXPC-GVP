@@ -101,3 +101,4 @@ Only entries classified as **Global candidate**, and then reviewed against
 - `docs/04_BUILDER.md` — the Phase 01.0 Builder MVP: command, stages, output, limitations
 - `docs/05_DISTRIBUTION.md` — Phase 02.0: Data Pack packaging, manifest, checksums, verification
 - `docs/06_RELEASE_CONTRACT.md` — Phase 02.1: GitHub Release tag/asset contract, local `release-check`
+- `docs/07_MAINTENANCE.md` — Production/Maintenance Mode: candidate flow, community workflow, consumer update contract
